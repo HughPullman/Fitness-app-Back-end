@@ -1,0 +1,26 @@
+POST http://localhost:3000/register
+content-type: application/json
+
+{
+    "email": "test@test.com",
+    "password": "testpass123!"
+}
+
+###
+
+POST http://localhost:3000/login
+content-type: application/json
+
+{
+    "email": "test@test.com",
+    "password": "testpass123!"
+}
+
+###
+GET http://localhost:3000/exerciseSearch
+content-type: application/json
+
+{
+    "searchValue": "Bench",
+    "type": "name"
+}

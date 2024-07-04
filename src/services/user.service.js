@@ -88,13 +88,9 @@ const deleteWorkout = async ({ userId, workout }) => {
 }
 
 const editWorkout = async ({ userId, workout, oldWorkoutName }) => {
-    const findUser = await User.findById(userId);
-    if (!findUser) throw new Error("User not found");
-    User.findOneAndUpdate({ _id: userId, "workouts.name" : oldWorkoutName }, {workout});
-    // let oldWorkout = await findUser.workouts.find((workout) => workout.name === oldWorkoutName);
-    // oldWorkout = workout;
-    // findUser.save();
-    return findUser.workouts;
+    await deleteWorkout({userId, workout: { name: oldWorkoutName }});
+    await createWorkout({userId, workout});
+    return;
 }
 
 

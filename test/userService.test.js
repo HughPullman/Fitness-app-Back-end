@@ -91,6 +91,107 @@ describe("User service tests", () => {
                 expect(e).toBeInstanceOf(Error);
             }
         });
+
+        test("it should return the users exercises", async () => {
+            let findByIdSpy = jest.spyOn(User, 'findById').mockReturnValue({ id: 1, exercises: [{ name: "TestExercise" }] });
+            
+            const res = await userService.getExercises("1");
+
+            expect(res).toEqual([{ name: "TestExercise" }]);
+        });
+    });
+
+    describe("Delete Exercise tests", () => {
+
+        test("it should call findById and return and error if not found", async () => {
+            let findByIdSpy = jest.spyOn(User, 'findById').mockReturnValue({});
+            
+            try {
+                await userService.deleteExercise({ userId: "TestId", exercise: {} });
+            } catch (e) {
+                expect(findByIdSpy).toHaveBeenCalledWith("TestId");
+                expect(e).toBeInstanceOf(Error);
+            }
+
+        });
+
+    });
+
+    describe("Create workout tests", () => {
+       
+         test("it should call findById and return and error if not found", async () => {
+            let findByIdSpy = jest.spyOn(User, 'findById').mockReturnValue({});
+            
+            try {
+                await userService.createWorkout({ userId: "TestId", workout: {} });
+            } catch (e) {
+                expect(findByIdSpy).toHaveBeenCalledWith("TestId");
+                expect(e).toBeInstanceOf(Error);
+            }
+
+         });
+        
+        test("it should throw and error if the workout already exists", async () => {
+           let findByIdSpy = jest.spyOn(User, 'findById').mockReturnValue({workouts:[{name: "TestWorkout"}]});
+            
+            try {
+                await userService.createWorkout({ userId: "TestId", workout: {name: "TestWorkout"} });
+            } catch (e) {
+                expect(e).toBeInstanceOf(Error);
+            }
+            
+        });
+    });
+
+    describe("Get workouts tests", () => {
+       
+        test("it should call findById and return and error if not found", async () => {
+        let findByIdSpy = jest.spyOn(User, 'findById').mockReturnValue({});
+        
+        try {
+            await userService.getWorkouts({ userId: "TestId"});
+        } catch (e) {
+            expect(findByIdSpy).toHaveBeenCalledWith("TestId");
+            expect(e).toBeInstanceOf(Error);
+        }
+
+        });
+
+        test("it should return the users workouts", async () => {
+            let findByIdSpy = jest.spyOn(User, 'findById').mockReturnValue({userId: "TestId", workouts: [{ name: "TestWorkout" }] });
+            
+            const res = await userService.getWorkouts({ userId: "TestId" })
+            
+            expect(res).toEqual([{name: "TestWorkout"}]);
+        });
+    });
+
+    describe("delete workout tests", () => {
+        test("it should call findById and return and error if not found", async () => {
+        let findByIdSpy = jest.spyOn(User, 'findById').mockReturnValue({});
+        
+        try {
+            await userService.deleteWorkout({ userId: "TestId", workout:{}});
+        } catch (e) {
+            expect(findByIdSpy).toHaveBeenCalledWith("TestId");
+            expect(e).toBeInstanceOf(Error);
+        }
+
+        });
+    });
+
+    describe("edit workout tests", () => {
+        test("it should call findById and return and error if not found", async () => {
+        let findByIdSpy = jest.spyOn(User, 'findById').mockReturnValue({});
+        
+        try {
+            await userService.editWorkout({ userId: "TestId", workout:{}});
+        } catch (e) {
+            expect(findByIdSpy).toHaveBeenCalledWith("TestId");
+            expect(e).toBeInstanceOf(Error);
+        }
+
+        });
     });
 
 });
